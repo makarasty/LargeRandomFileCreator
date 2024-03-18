@@ -22,6 +22,8 @@ class Program
 		{
 			await WriteRandomNumbersToFileAsync(filePath, numberOfLines, minValue, maxValue + 1);
 			Console.WriteLine($"Файл ({filePath}) успішно записаний!");
+
+			await DisplayFileContentAsync(filePath);
 		}
 		catch (Exception ex)
 		{
@@ -39,6 +41,18 @@ class Program
 		{
 			int randomNumber = random.Next(minValue, maxValue);
 			await writer.WriteLineAsync(randomNumber.ToString());
+		}
+	}
+
+	private static async Task DisplayFileContentAsync(string filePath)
+	{
+		using var reader = new StreamReader(filePath);
+
+		Console.WriteLine("Вміст файлу:");
+		while (!reader.EndOfStream)
+		{
+			string line = await reader.ReadLineAsync() ?? string.Empty;
+			Console.WriteLine(line);
 		}
 	}
 
